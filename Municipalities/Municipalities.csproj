@@ -14,10 +14,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Municipalities.Cmd.Service.Contracts\Municipalities.Cmd.Service.Contracts.csproj" />
     <ProjectReference Include="..\Municipalities.Cmd.Service\Municipalities.Cmd.Service.csproj" />
+    <ProjectReference Include="..\Municipalities.Data.Contracts\Municipalities.Data.Contracts.csproj" />
+    <ProjectReference Include="..\Municipalities.Data\Municipalities.Data.csproj" />
     <ProjectReference Include="..\Municipalities.Input.Contracts\Municipalities.Input.Contracts.csproj" />
     <ProjectReference Include="..\Municipalities.Input\Municipalities.Input.csproj" />
     <ProjectReference Include="..\Municipalities.Logging.Contracts\Municipalities.Logging.Contracts.csproj" />
     <ProjectReference Include="..\Municipalities.Logging\Municipalities.Logging.csproj" />
+    <ProjectReference Include="..\Municipalities.Requests.Contracts\Municipalities.Requests.Contracts.csproj" />
+    <ProjectReference Include="..\Municipalities.Requests\Municipalities.Requests.csproj" />
   </ItemGroup>
 
 </Project>

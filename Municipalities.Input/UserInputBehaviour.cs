@@ -10,23 +10,20 @@ namespace Municipalities.Input
 {
     public class UserInputBehaviour : IUserInputBehaviour
     {
-        public event Action RequestSoftwareExit;
         private readonly IProgramLogger _log;
         private readonly ICommandMapper _mapper;
-        private readonly ManualResetEvent _endSignal;
 
         public UserInputBehaviour(IProgramLogger log, ICommandMapper mapper)
         {
             _log = log;
-            _endSignal = new ManualResetEvent(false);
             _mapper = mapper;
         }
 
-        public void StartListening()
+        public void StartListening(CancellationToken cancelToken)
         {
             PrintHelp();
 
-            var commandReadThread = new Thread(ReadLine)
+            var commandReadThread = new Thread(() => ReadLine(cancelToken))
             {
                 IsBackground = true
             };
@@ -44,9 +41,8 @@ namespace Municipalities.Input
             }
             finally
             {
-                _endSignal.WaitOne();
+                WaitHandle.WaitAny(new[] { cancelToken.WaitHandle });
                 commandReadThread.Abort();
-                _endSignal.Reset();
             }
         }
 
@@ -55,9 +51,9 @@ namespace Municipalities.Input
             _mapper.ExecuteCommand(new string[] { "help" });
         }
 
-        private void ReadLine()
+        private void ReadLine(CancellationToken cancelToken)
         {
-            while (true)
+            while (!cancelToken.IsCancellationRequested)
             {
                 try
                 {
@@ -81,16 +77,11 @@ namespace Municipalities.Input
                 }
             }
         }
-
-        private void EndWaiting()
-        {
-            _endSignal.Set();
-            RequestSoftwareExit?.Invoke();
-        }
     }
     
     //Ugly implementation of parsing string to command-line arguments
     //Since default command-line provides easy way of retrieving args[] in Main
+    //We need a raw method which would parse argument-like array from the string
     public static class StrToStringArgsParser
     {
         [DllImport("shell32.dll", SetLastError = true)]

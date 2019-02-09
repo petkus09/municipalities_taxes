@@ -2,8 +2,8 @@
 using Municipalities.Input.Contracts;
 using Municipalities.Logging;
 using Municipalities.Logging.Contracts;
+using Municipalities.Requests.Contracts;
 using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using Unity;
 
@@ -30,12 +30,10 @@ namespace Municipalities
     {
         private IUnityContainer _container;
         private IProgramLogger _logger;
-        private readonly BlockingCollection<Action> _requests;
         private readonly CancellationTokenSource _cancelTokenSource;
 
         public App()
         {
-            _requests = new BlockingCollection<Action>();
             _cancelTokenSource = new CancellationTokenSource();
         }
 
@@ -49,28 +47,23 @@ namespace Municipalities
 
             _logger.Info("Starting Municipalities service. press Ctrl+C to exit...");
             var inputBehaviour = _container.Resolve<IUserInputBehaviour>();
-            inputBehaviour.RequestSoftwareExit += ExitApplication;
+            var requestsHandling = _container.Resolve<IRequestsFacade>();
 
-            var inputBehaviourThread = new Thread(inputBehaviour.StartListening)
+            var inputBehaviourThread = new Thread(() => inputBehaviour.StartListening(_cancelTokenSource.Token))
             {
                 IsBackground = true
             };
             inputBehaviourThread.Start();
+            var requestsHandlingThread = new Thread(() => requestsHandling.ListenForRequests(_cancelTokenSource.Token))
+            {
+                IsBackground = true
+            };
+            requestsHandlingThread.Start();
 
-            ProcessRequests();
-            _requests.Dispose();
-            inputBehaviourThread.Abort();
+
+            WaitHandle.WaitAny(new[] { _cancelTokenSource.Token.WaitHandle });
 
             _logger.Info("Shutting down...");
-        }
-
-        private void ProcessRequests()
-        {
-            var token = _cancelTokenSource.Token;
-            while (!_requests.IsCompleted)
-            {
-                _requests.Take(token).Invoke();
-            }
         }
 
         public void ExitApplication()

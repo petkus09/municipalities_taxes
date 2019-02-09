@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Municipalities.Input.Contracts
 {
     public interface IUserInputBehaviour
     {
-        event Action RequestSoftwareExit;
-        void StartListening();
+        void StartListening(CancellationToken cancelToken);
     }
 }

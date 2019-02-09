@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Municipalities.Data.Contracts\Municipalities.Data.Contracts.csproj" />
+    <ProjectReference Include="..\Municipalities.Data.Models\Municipalities.Data.Models.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,8 +1,12 @@
 ﻿using Municipalities.Cmd.Service;
 using Municipalities.Cmd.Service.Contracts;
+using Municipalities.Data;
+using Municipalities.Data.Contracts;
 using Municipalities.Input;
 using Municipalities.Input.Contracts;
 using Municipalities.Logging.Contracts;
+using Municipalities.Requests;
+using Municipalities.Requests.Contracts;
 using Unity;
 using Unity.Lifetime;
 
@@ -22,6 +26,11 @@ namespace Municipalities
             container.RegisterType<IAddCommand, AddCommand>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGetCommand, GetCommand>(new ContainerControlledLifetimeManager());
             container.RegisterType<IImportCommand, ImportCommand>(new ContainerControlledLifetimeManager());
+
+            container.RegisterType<IRequestsFacade, RequestsFacade>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INewRecordRequests, NewRecordRequests>(new ContainerControlledLifetimeManager());
+
+            container.RegisterType<IAppData, AppData>(new ContainerControlledLifetimeManager());
 
             return container;
         }

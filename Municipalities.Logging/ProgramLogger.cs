@@ -20,6 +20,8 @@ namespace Municipalities.Logging
             XmlConfigurator.Configure(repo, configurationFile);
         }
 
+        public void Debug(string message) => _logger.Debug(message);
+
         public void Info(string message) => _logger.Info(message);
 
         public void Warn(string message) => _logger.Warn(message);

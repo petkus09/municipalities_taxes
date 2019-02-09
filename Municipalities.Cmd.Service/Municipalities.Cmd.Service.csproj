@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Municipalities.Cmd.Service.Contracts\Municipalities.Cmd.Service.Contracts.csproj" />
+    <ProjectReference Include="..\Municipalities.Logging.Contracts\Municipalities.Logging.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

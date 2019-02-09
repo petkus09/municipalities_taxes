@@ -1,4 +1,5 @@
-﻿using Municipalities.Input.Contracts;
+﻿using Municipalities.Cmd.Models;
+using Municipalities.Input.Contracts;
 using Municipalities.Logging.Contracts;
 using System;
 using System.Runtime.InteropServices;
@@ -69,6 +70,10 @@ namespace Municipalities.Input
                 catch(System.ComponentModel.Win32Exception ex)
                 {
                     _log.Error("Unexpected error occured while trying to parse arguments", ex, "Error occured when trying to parse arguments. Please try again");
+                }
+                catch(CmdCommandExecuteArgumentException ex)
+                {
+                    _log.Error("Validation error occured", ex, ex.ValidationMessage);
                 }
                 catch (Exception ex)
                 {

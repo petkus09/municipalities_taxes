@@ -18,7 +18,6 @@ namespace Municipalities.Cmd.Service
 
         public bool Execute(Get args)
         {
-            _log.Info("Executing command 'Get'...");
             return true;
         }
     }
